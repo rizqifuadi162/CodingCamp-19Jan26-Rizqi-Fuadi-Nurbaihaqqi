@@ -2,162 +2,32 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Tugas</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
-            display: flex;
-            justify-content: center;
-            padding-top: 40px;
-        }
-
-        .container {
-            background: white;
-            padding: 20px;
-            width: 400px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
-        h2 {
-            text-align: center;
-        }
-
-        form {
-            display: flex;
-            gap: 10px;
-        }
-
-        input[type="text"] {
-            flex: 1;
-            padding: 8px;
-        }
-
-        button {
-            padding: 8px 12px;
-            cursor: pointer;
-        }
-
-        .filter {
-            margin: 15px 0;
-            text-align: center;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px;
-            margin-bottom: 6px;
-            background: #eee;
-            border-radius: 4px;
-        }
-
-        li.completed span {
-            text-decoration: line-through;
-            color: gray;
-        }
-
-        .delete {
-            background: red;
-            color: white;
-            border: none;
-            padding: 4px 8px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="container">
+        <h1>Daftar Tugas</h1>
+        <form id="taskForm">
+            <label for="taskName">Nama Tugas:</label>
+            <input type="text" id="taskName" name="taskName" required>
 
-<div class="container">
-    <h2>Daftar Tugas</h2>
+            <label for="dueDate">Tanggal Jatuh Tempo:</label>
+            <input type="date" id="dueDate" name="dueDate" required>
 
-    <!-- Form Input -->
-    <form id="taskForm">
-        <input type="text" id="taskInput" placeholder="Masukkan tugas..." required>
-        <button type="submit">Tambah</button>
-    </form>
+            <button type="submit">Tambah Tugas</button>
+        </form>
+        
+        <div class="filter">
+            <label for="filter">Filter Tugas:</label>
+            <input type="text" id="filter" placeholder="Cari tugas...">
+        </div>
 
-    <!-- Filter -->
-    <div class="filter">
-        <select id="filter">
-            <option value="all">Semua</option>
-            <option value="completed">Selesai</option>
-            <option value="uncompleted">Belum Selesai</option>
-        </select>
+        <ul id="taskList"></ul>
+        <div id="totalTasks">Total Tugas: 0</div>
     </div>
 
-    <!-- Daftar Tugas -->
-    <ul id="taskList"></ul>
-</div>
-
-<script>
-    const taskForm = document.getElementById("taskForm");
-    const taskInput = document.getElementById("taskInput");
-    const taskList = document.getElementById("taskList");
-    const filter = document.getElementById("filter");
-
-    let tasks = [];
-
-    // Tambah Data
-    taskForm.addEventListener("submit", function(e) {
-        e.preventDefault();
-
-        const task = {
-            text: taskInput.value,
-            completed: false
-        };
-
-        tasks.push(task);
-        taskInput.value = "";
-        renderTasks();
-    });
-
-    // Render Tugas
-    function renderTasks() {
-        taskList.innerHTML = "";
-
-        let filteredTasks = tasks;
-
-        if (filter.value === "completed") {
-            filteredTasks = tasks.filter(t => t.completed);
-        } else if (filter.value === "uncompleted") {
-            filteredTasks = tasks.filter(t => !t.completed);
-        }
-
-        filteredTasks.forEach((task, index) => {
-            const li = document.createElement("li");
-            if (task.completed) li.classList.add("completed");
-
-            const span = document.createElement("span");
-            span.textContent = task.text;
-            span.addEventListener("click", () => {
-                task.completed = !task.completed;
-                renderTasks();
-            });
-
-            const deleteBtn = document.createElement("button");
-            deleteBtn.textContent = "Hapus";
-            deleteBtn.classList.add("delete");
-            deleteBtn.addEventListener("click", () => {
-                tasks.splice(index, 1);
-                renderTasks();
-            });
-
-            li.appendChild(span);
-            li.appendChild(deleteBtn);
-            taskList.appendChild(li);
-        });
-    }
-
-    // Filter Data
-    filter.addEventListener("change", renderTasks);
-</script>
-
+    <script src="script.js"></script>
 </body>
 </html>
